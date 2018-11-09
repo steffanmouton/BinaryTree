@@ -109,9 +109,11 @@ void BinaryTree::remove(int a_nValue)
 		if (smallest->getRight() == nullptr)
 		{
 			delete smallest;
-			smallParent->setRight(nullptr);
+			smallParent->setLeft(nullptr);
 		}
-		else
+
+		//deleting smallest node if one child
+		else if (smallest->getRight() != nullptr)
 		{
 			smallParent->setRight(smallest->getRight());
 			delete smallest;
