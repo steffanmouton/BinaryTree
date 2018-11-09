@@ -236,7 +236,6 @@ bool BinaryTree::findNode(int a_nSearchValue, TreeNode ** ppOutNode, TreeNode **
 			parent = current;
 			current = current->getRight();
 		}
-
 	}
 	return false;
 }
