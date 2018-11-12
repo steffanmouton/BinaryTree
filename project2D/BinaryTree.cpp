@@ -84,6 +84,12 @@ void BinaryTree::remove(int a_nValue)
 	//deleting a leaf
 	if (current->getLeft() == nullptr && current->getRight() == nullptr)
 	{
+		if (current == m_pRoot)
+		{
+			delete current;
+			m_pRoot = nullptr;
+			return;
+		}
 		delete current;
 		parent->setLeft(nullptr);
 		parent->setRight(nullptr);
@@ -93,10 +99,8 @@ void BinaryTree::remove(int a_nValue)
 	if (current->getLeft() != nullptr && current->getRight() != nullptr)
 	{
 		TreeNode* smallest = current->getRight();
-		TreeNode* smallParent = parent->getRight();
+		TreeNode* smallParent = current;
 
-
-	
 		while (smallest->getLeft() != nullptr)
 		{
 			smallParent = smallest;
@@ -108,16 +112,25 @@ void BinaryTree::remove(int a_nValue)
 		//deleting smallest node if leaf
 		if (smallest->getRight() == nullptr)
 		{
+			if (smallParent == current)
+			{
+				delete smallest;
+				current->setRight(nullptr);
+			}
+			else
+			{
+				delete smallest;
+				smallParent->setLeft(nullptr);
+			}
+		}
+		//deleting smallest node if one child
+		else if (smallest->hasRight())
+		{
+
+			current->setRight(smallest->getRight());
 			delete smallest;
-			smallParent->setLeft(nullptr);
 		}
 
-		//deleting smallest node if one child
-		else if (smallest->getRight() != nullptr)
-		{
-			smallParent->setRight(smallest->getRight());
-			delete smallest;
-		}
 
 		//
 		return;
@@ -128,7 +141,7 @@ void BinaryTree::remove(int a_nValue)
 		enum Side { Left, Right };
 
 		//determine side of parent
-		Side parentSide;
+		Side parentSide = Left;
 
 		if (parent->getLeft() != nullptr)
 		{
@@ -147,7 +160,7 @@ void BinaryTree::remove(int a_nValue)
 		}
 
 		//determine side of current
-		Side curSide;
+		Side curSide = Left;
 
 		if (current->getLeft() != nullptr)
 		{
@@ -170,8 +183,15 @@ void BinaryTree::remove(int a_nValue)
 				parent->setRight(current->getLeft());
 			}
 
+			if (current == m_pRoot)
+			{
+				delete current;
+				m_pRoot = nullptr;
+				return;
+			}
+
 			delete current;
-			break;
+			return;
 
 		case Right:
 			if (parentSide == Left)
@@ -182,9 +202,16 @@ void BinaryTree::remove(int a_nValue)
 			{
 				parent->setRight(current->getRight());
 			}
+
+			if (current == m_pRoot)
+			{
+				delete current;
+				m_pRoot = nullptr;
+				return;
+			}
 			
 			delete current;
-			break;
+			return;
 		}
 
 		return;
