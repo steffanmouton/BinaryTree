@@ -130,13 +130,20 @@ void BinaryTree::remove(int a_nValue)
 		//determine side of parent
 		Side parentSide;
 
-		if (parent->getLeft()->getData() == a_nValue)
+		if (parent->getLeft() != nullptr)
 		{
-			parentSide = Left;
+			if (parent->getLeft()->getData() == a_nValue)
+			{
+				parentSide = Left;
+			}
 		}
-		else
+
+		if (parent->getRight() != nullptr)
 		{
-			parentSide = Right;
+			if (parent->getRight()->getData() == a_nValue)
+			{
+				parentSide = Right;
+			}
 		}
 
 		//determine side of current
