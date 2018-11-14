@@ -81,23 +81,6 @@ void BinaryTree::remove(int a_nValue)
 	current = *ppOutNode;
 	parent = *ppOutParent;
 
-	if (current->hasRight())
-	{
-		TreeNode* small;
-		TreeNode* smallParent = current;
-		small = current->getRight();
-
-		while (small->hasLeft())
-		{
-			smallParent = small;
-			small = small->getLeft();
-		}
-
-
-	}
-
-
-
 	//deleting root node
 	/*if (current == m_pRoot && parent == m_pRoot)
 	{
@@ -107,140 +90,140 @@ void BinaryTree::remove(int a_nValue)
 		}
 	}*/
 	//deleting a leaf
-	//if (current->getLeft() == nullptr && current->getRight() == nullptr)
-	//{
-	//	if (current == m_pRoot)
-	//	{
-	//		delete current;
-	//		m_pRoot = nullptr;
-	//		return;
-	//	}
-	//	delete current;
-	//	parent->setLeft(nullptr);
-	//	parent->setRight(nullptr);
-	//	return;
-	//}
-	////deleting node with two children
-	//if (current->getLeft() != nullptr && current->getRight() != nullptr)
-	//{
-	//	TreeNode* smallest = current->getRight();
-	//	TreeNode* smallParent = current;
+	if (current->getLeft() == nullptr && current->getRight() == nullptr)
+	{
+		if (current == m_pRoot)
+		{
+			delete current;
+			m_pRoot = nullptr;
+			return;
+		}
+		delete current;
+		parent->setLeft(nullptr);
+		parent->setRight(nullptr);
+		return;
+	}
+	//deleting node with two children
+	if (current->getLeft() != nullptr && current->getRight() != nullptr)
+	{
+		TreeNode* smallest = current->getRight();
+		TreeNode* smallParent = current;
 
-	//	while (smallest->getLeft() != nullptr)
-	//	{
-	//		smallParent = smallest;
-	//		smallest = smallest->getLeft();
-	//	}
+		while (smallest->getLeft() != nullptr)
+		{
+			smallParent = smallest;
+			smallest = smallest->getLeft();
+		}
 
-	//	current->setData(smallest->getData());
+		current->setData(smallest->getData());
 
-	//	//deleting smallest node if leaf
-	//	if (smallest->getRight() == nullptr)
-	//	{
-	//		if (smallParent == current)
-	//		{
-	//			delete smallest;
-	//			current->setRight(nullptr);
-	//		}
-	//		else
-	//		{
-	//			delete smallest;
-	//			smallParent->setLeft(nullptr);
-	//		}
-	//	}
-	//	//deleting smallest node if one child
-	//	else if (smallest->hasRight())
-	//	{
+		//deleting smallest node if leaf
+		if (smallest->getRight() == nullptr)
+		{
+			if (smallParent == current)
+			{
+				delete smallest;
+				current->setRight(nullptr);
+			}
+			else
+			{
+				delete smallest;
+				smallParent->setLeft(nullptr);
+			}
+		}
+		//deleting smallest node if one child
+		else if (smallest->hasRight())
+		{
 
-	//		current->setRight(smallest->getRight());
-	//		delete smallest;
-	//	}
+			current->setRight(smallest->getRight());
+			delete smallest;
+		}
 
 
-	//	//
-	//	return;
-	//}
-	////deleting node with one child
-	//if (current->getLeft() != nullptr || current->getRight() != nullptr)
-	//{
-	//	enum Side { Left, Right };
+		//
+		return;
+	}
+	//deleting node with one child
+	if (current->getLeft() != nullptr || current->getRight() != nullptr)
+	{
+		enum Side { Left, Right };
 
-	//	//determine side of parent
-	//	Side parentSide = Left;
+		//determine side of parent
+		Side parentSide = Left;
 
-	//	if (parent->getLeft() != nullptr)
-	//	{
-	//		if (parent->getLeft()->getData() == a_nValue)
-	//		{
-	//			parentSide = Left;
-	//		}
-	//	}
+		if (parent->getLeft() != nullptr)
+		{
+			if (parent->getLeft()->getData() == a_nValue)
+			{
+				parentSide = Left;
+			}
+		}
 
-	//	if (parent->getRight() != nullptr)
-	//	{
-	//		if (parent->getRight()->getData() == a_nValue)
-	//		{
-	//			parentSide = Right;
-	//		}
-	//	}
+		if (parent->getRight() != nullptr)
+		{
+			if (parent->getRight()->getData() == a_nValue)
+			{
+				parentSide = Right;
+			}
+		}
 
-	//	//determine side of current
-	//	Side curSide = Left;
+		//determine side of current
+		Side curSide = Left;
 
-	//	if (current->getLeft() != nullptr)
-	//	{
-	//		curSide = Left;
-	//	}
-	//	else
-	//	{
-	//		curSide = Right;
-	//	}
-	//	//
-	//	switch (curSide)
-	//	{
-	//	case Left:
-	//		if (parentSide == Left)
-	//		{
-	//			parent->setLeft(current->getLeft());
-	//		}
-	//		else
-	//		{
-	//			parent->setRight(current->getLeft());
-	//		}
+		if (current->getLeft() != nullptr)
+		{
+			curSide = Left;
+		}
+		else
+		{
+			curSide = Right;
+		}
+		//
+		switch (curSide)
+		{
+		case Left:
+			if (parentSide == Left)
+			{
+				parent->setLeft(current->getLeft());
+			}
+			else
+			{
+				parent->setRight(current->getLeft());
+			}
 
-	//		if (current == m_pRoot)
-	//		{
-	//			delete current;
-	//			m_pRoot = nullptr;
-	//			return;
-	//		}
+			if (current == m_pRoot)
+			{
+				delete current;
+				m_pRoot = nullptr;
+				return;
+			}
 
-	//		delete current;
-	//		return;
+			delete current;
+			return;
 
-	//	case Right:
-	//		if (parentSide == Left)
-	//		{
-	//			parent->setLeft(current->getRight());
-	//		}
-	//		else
-	//		{
-	//			parent->setRight(current->getRight());
-	//		}
+		case Right:
+			if (parentSide == Left)
+			{
+				parent->setLeft(current->getRight());
+			}
+			else
+			{
+				parent->setRight(current->getRight());
+			}
 
-	//		if (current == m_pRoot)
-	//		{
-	//			delete current;
-	//			m_pRoot = nullptr;
-	//			return;
-	//		}
-	//		
-	//		delete current;
-	//		return;
-	//	}
+			if (current == m_pRoot)
+			{
+				delete current;
+				m_pRoot = nullptr;
+				return;
+			}
+			
+			delete current;
+			return;
+		}
 
-	//	return;
-	//}
+		return;
+	}
 
 }
 
