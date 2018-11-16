@@ -1,7 +1,7 @@
 #include "BinaryTree.h"
 
 
-
+//default constructor, setting root of tree to null
 BinaryTree::BinaryTree()
 {
 	m_pRoot = nullptr;
@@ -12,11 +12,14 @@ BinaryTree::~BinaryTree()
 {
 }
 
+//bool check to see if tree is empty
 bool BinaryTree::isEmpty() const
 {
 	return (m_pRoot == nullptr) ? true : false;
 }
 
+//inserts an entirely new node into the tree into the correct position
+//via iterating over the existing tree branches to find the proper place
 void BinaryTree::insert(int a_nValue)
 {
 	TreeNode* current = m_pRoot;
@@ -69,6 +72,7 @@ void BinaryTree::insert(int a_nValue)
 
 }
 
+//removes the node in the tree with the matching value passed in
 void BinaryTree::remove(int a_nValue)
 {
 	TreeNode* current;
@@ -161,153 +165,9 @@ void BinaryTree::remove(int a_nValue)
 		delete current;
 	}
 
-
-	//deleting root node
-	/*if (current == m_pRoot && parent == m_pRoot)
-	{
-		if (current->hasLeft() && current->hasRight())
-		{
-			current = current->getRight();
-		}
-	}*/
-	//deleting a leaf
-	//if (current->getLeft() == nullptr && current->getRight() == nullptr)
-	//{
-	//	if (current == m_pRoot)
-	//	{
-	//		delete current;
-	//		m_pRoot = nullptr;
-	//		return;
-	//	}
-	//	delete current;
-	//	parent->setLeft(nullptr);
-	//	parent->setRight(nullptr);
-	//	return;
-	//}
-	////deleting node with two children
-	//if (current->getLeft() != nullptr && current->getRight() != nullptr)
-	//{
-	//	TreeNode* smallest = current->getRight();
-	//	TreeNode* smallParent = current;
-
-	//	while (smallest->getLeft() != nullptr)
-	//	{
-	//		smallParent = smallest;
-	//		smallest = smallest->getLeft();
-	//	}
-
-	//	current->setData(smallest->getData());
-
-	//	//deleting smallest node if leaf
-	//	if (smallest->getRight() == nullptr)
-	//	{
-	//		if (smallParent == current)
-	//		{
-	//			delete smallest;
-	//			current->setRight(nullptr);
-	//		}
-	//		else
-	//		{
-	//			delete smallest;
-	//			smallParent->setLeft(nullptr);
-	//		}
-	//	}
-	//	//deleting smallest node if one child
-	//	else if (smallest->hasRight())
-	//	{
-
-	//		current->setRight(smallest->getRight());
-	//		delete smallest;
-	//	}
-
-
-	//	//
-	//	return;
-	//}
-	////deleting node with one child
-	//if (current->getLeft() != nullptr || current->getRight() != nullptr)
-	//{
-	//	enum Side { Left, Right };
-
-	//	//determine side of parent
-	//	Side parentSide = Left;
-
-	//	if (parent->getLeft() != nullptr)
-	//	{
-	//		if (parent->getLeft()->getData() == a_nValue)
-	//		{
-	//			parentSide = Left;
-	//		}
-	//	}
-
-	//	if (parent->getRight() != nullptr)
-	//	{
-	//		if (parent->getRight()->getData() == a_nValue)
-	//		{
-	//			parentSide = Right;
-	//		}
-	//	}
-
-	//	//determine side of current
-	//	Side curSide = Left;
-
-	//	if (current->getLeft() != nullptr)
-	//	{
-	//		curSide = Left;
-	//	}
-	//	else
-	//	{
-	//		curSide = Right;
-	//	}
-	//	//
-	//	switch (curSide)
-	//	{
-	//	case Left:
-	//		if (parentSide == Left)
-	//		{
-	//			parent->setLeft(current->getLeft());
-	//		}
-	//		else
-	//		{
-	//			parent->setRight(current->getLeft());
-	//		}
-
-	//		if (current == m_pRoot)
-	//		{
-	//			delete current;
-	//			m_pRoot = nullptr;
-	//			return;
-	//		}
-
-	//		delete current;
-	//		return;
-
-	//	case Right:
-	//		if (parentSide == Left)
-	//		{
-	//			parent->setLeft(current->getRight());
-	//		}
-	//		else
-	//		{
-	//			parent->setRight(current->getRight());
-	//		}
-
-	//		if (current == m_pRoot)
-	//		{
-	//			delete current;
-	//			m_pRoot = nullptr;
-	//			return;
-	//		}
-	//		
-	//		delete current;
-	//		return;
-	//	}
-
-	//	return;
-	//}
-
 }
 
+//find node, when FIND button pressed, highlights that node 
 TreeNode * BinaryTree::find(int a_nValue)
 {
 	TreeNode* current = m_pRoot;
@@ -331,11 +191,13 @@ TreeNode * BinaryTree::find(int a_nValue)
 	return current;
 }
 
+//shorthand draw function to be called elsewhere
 void BinaryTree::draw(aie::Renderer2D * renderer, aie::Font *g_systemFont, TreeNode * selected)
 {
 	draw(renderer, m_pRoot, 640, 680, 640, g_systemFont, selected);
 }
 
+//finds a node by the given searchValue, returns bool on if found, also returns searched for node and its parent 
 bool BinaryTree::findNode(int a_nSearchValue, TreeNode ** ppOutNode, TreeNode ** ppOutParent)
 {
 	TreeNode* current = m_pRoot;
@@ -363,6 +225,7 @@ bool BinaryTree::findNode(int a_nSearchValue, TreeNode ** ppOutNode, TreeNode **
 	return false;
 }
 
+//draws tree to window
 void BinaryTree::draw(aie::Renderer2D * renderer, TreeNode *pNode, int x, int y, int horizontalSpacing, aie::Font *g_systemFont, TreeNode * selected)
 {
 	horizontalSpacing /= 2;
