@@ -81,6 +81,8 @@ void BinaryTree::remove(int a_nValue)
 	current = *ppOutNode;
 	parent = *ppOutParent;
 
+	//if current node has a right branch
+	//obtain smallest node on right side of current
 	if (current->hasRight())
 	{
 		TreeNode* small;
@@ -93,9 +95,71 @@ void BinaryTree::remove(int a_nValue)
 			small = small->getLeft();
 		}
 
+		current->setData(small->getData());
 
+		if (smallParent->getLeft() == small)
+		{
+			if (small->hasRight())
+			{
+				smallParent->setLeft(small->getRight());
+			}
+			else
+			{
+				smallParent->setLeft(nullptr);
+			}
+		}
+		else if (smallParent->getRight() == small)
+		{
+			if (small->hasRight())
+			{
+				smallParent->setRight(small->getRight());
+			}
+			else
+			{
+				smallParent->setRight(nullptr);
+			}
+		}
+
+		delete small;
 	}
+	else //if current node has no right branch
+	{
+		if (parent->getLeft() == current)
+		{
+			if (current->hasLeft())
+			{
+				parent->setLeft(current->getLeft());
+			}
+			else
+			{
+				parent->setLeft(nullptr);
+			}
+		}
+		if (parent->getRight() == current)
+		{
+			if (current->hasLeft())
+			{
+				parent->setRight(current->getLeft());
+			}
+			else
+			{
+				parent->setRight(nullptr);
+			}
+		}
+		else if (current == m_pRoot)
+		{
+			if (current->hasLeft())
+			{
+				m_pRoot = current->getLeft();
+			}
+			else
+			{
+				m_pRoot = nullptr;
+			}
+		}
 
+		delete current;
+	}
 
 
 	//deleting root node
